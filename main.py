@@ -32,9 +32,9 @@ def get_image(data):
     for i in data:
         for a,b in i.items():
             if a=='images':
-                for cock,balls in b.items():
-                    if cock=='small':
-                        images.append(balls)
+                for c,b in b.items():
+                    if c=='small':
+                        images.append(b)
     return images
 
 def get_price(data):
@@ -42,9 +42,9 @@ def get_price(data):
     for i in data:
         for a,b in i.items():
             if a=='tcgplayer':
-                for cock,balls in b.items():
-                    if (cock=='prices'):
-                        prices.append(list(balls.items())[0])       
+                for c,b in b.items():
+                    if (c=='prices'):
+                        prices.append(list(b.items())[0])       
     return prices
     
 def prettify(prices):
