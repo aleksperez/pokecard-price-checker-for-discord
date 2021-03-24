@@ -5,20 +5,21 @@ from dotenv import load_dotenv
 from pokemontcgsdk import Type, Rarity, Subtype
 
 def get_query(message):
-   query="?q=supertype:pokemon"
+   query="?q="
    for i in message:
        query=query+" "+i
    return query
 
 def get_data(query):
     json = get_json(query)
-    data=list(json.values())[0]
-    if len(data) >= 10:
-        return 0
-    if not data:
+    if not json:
         return None
     else:
-        return data
+        data=list(json.values())[0]
+        if len(data) >= 20:
+            return 0
+        else:
+            return data
 
 def get_json(query):
     response = req.get("https://api.pokemontcg.io/v2/cards" + query)
@@ -32,9 +33,9 @@ def get_image(data):
     for i in data:
         for a,b in i.items():
             if a=='images':
-                for c,b in b.items():
+                for c,p in b.items():
                     if c=='small':
-                        images.append(b)
+                        images.append(p)
     return images
 
 def get_price(data):
@@ -42,9 +43,9 @@ def get_price(data):
     for i in data:
         for a,b in i.items():
             if a=='tcgplayer':
-                for c,b in b.items():
+                for c,p in b.items():
                     if (c=='prices'):
-                        prices.append(list(b.items())[0])       
+                        prices.append(list(p.items())[0])       
     return prices
     
 def prettify(prices):
@@ -61,7 +62,7 @@ def prettify(prices):
                     cardprices+=("%s : $%s  |   " % (k.upper(), v))
         card+=cardprices
     return card
-    
+
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 client=discord.Client()
