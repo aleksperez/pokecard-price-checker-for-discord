@@ -99,7 +99,7 @@ async def on_message(message):
         if data == 0:
             await message.channel.send("Result waay too big, narrow down the search")
         elif not data:
-            await message.channel.send("You fucked something up in your command.. check pinned messages for correct format")
+            await message.channel.send("Error in your command.. check pinned messages for correct format")
         else:
             image = get_image(data)
             prices= get_price(data)
