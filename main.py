@@ -61,16 +61,7 @@ def prettify(prices):
                     cardprices+=("%s : $%s  |   " % (k.upper(), v))
         card+=cardprices
     return card
-'''
-message="-cardprice types:water"
-message=message.split(" ")
-message.pop(0)
-query= get_query(message)
-data= get_data(query)
-print(data)
-
-'''
-
+    
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 client=discord.Client()
