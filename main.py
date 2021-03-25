@@ -16,53 +16,36 @@ def get_data(query):
         return None
     else:
         data=list(json.values())[0]
-        if len(data) >= 20:
-            return 0
-        else:
-            return data
+        return 0 if len(data) >= 20 else data
 
 def get_json(query):
     response = req.get("https://api.pokemontcg.io/v2/cards" + query)
-    if response.status_code != 200:
-        return None
-    else: 
-        return response.json()
+    return None if response.status_code != 200 else response.json()
 
 def get_image(data):
     images=[]
-    for i in data:
-        for a,b in i.items():
-            if a=='images':
-                for c,p in b.items():
-                    if c=='small':
-                        images.append(p)
+    [[images.append(p) for c,p in b.items() if c=='small']for i in data for a,b in i.items() if a=='images']
     return images
 
 def get_price(data):
+    tcgplayer=[]
     prices=[]
-    for i in data:
-        for a,b in i.items():
-            if a=='tcgplayer':
-                for c,p in b.items():
-                    if (c=='prices'):
-                        prices.append(list(p.items())[0])       
+    tcgplayer = [tcgplayer+list(b.items()) for i in data for a,b in i.items() if a=='tcgplayer']
+    prices = [list(p.items()) for g in tcgplayer for c,p in g if c=='prices']
     return prices
     
-def prettify(prices):
-    pretty=""
-    for b in prices:
-        title=""
-        cardprices=""
-        if type(b) != dict:
-            title+=("     -- %s -- \n" % b.upper())
-            card=title
-        else:
-            for k,v in b.items():
-                if k.lower() != 'directlow':
-                    cardprices+=("%s : $%s  |   " % (k.upper(), v))
-        card+=cardprices
+def prettify(price):
+    card=""
+    title=""
+    cardprices=""
+    title = [title+("\n -- %s -- \n" % x.upper())for i in range(len(price)) for x in price[i] if type(x) != dict]
+    cardprices= [[cardprices+("|   %s : $%s  |   " % (k.upper(), v)) for k,v in x.items() if k.lower() != 'directlow']for i in range(len(price)) for x in price[i] if type(x) == dict]
+    for i in range(len(title)):
+        card+=title[i]    
+        for q in range(len(cardprices[i])):
+            card += str(cardprices[i][q])
     return card
-
+    
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 client=discord.Client()
@@ -104,10 +87,8 @@ async def on_message(message):
         else:
             image = get_image(data)
             prices= get_price(data)
-            for i in range(len(prices)):
+            for i in range(len(image)):
                 card=prettify(prices[i])
                 await message.channel.send(image[i])
                 await message.channel.send(card)
-        
-
 client.run(TOKEN)
