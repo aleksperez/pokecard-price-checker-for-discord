@@ -45,7 +45,7 @@ def prettify(price):
         for q in range(len(cardprices[i])):
             card += str(cardprices[i][q])
     return card
-    
+
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 client=discord.Client()
