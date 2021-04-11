@@ -1,0 +1,11 @@
+---
+application:
+  name: "pokecard-price-checker-for-discord"
+  project: "poke-price-checker bot"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-pokecard-price-checker-for-discord"
+  routes:
+  - application_name: "pokecard-price-checker-for-discord"
+    paths:
+    - "/*"
