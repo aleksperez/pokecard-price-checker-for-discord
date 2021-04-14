@@ -29,7 +29,6 @@ google-auth-oauthlib==0.4.2
 google-pasta==0.2.0
 greenlet==1.0.0
 grpcio==1.33.2
--e git+https://github.com/openai/gym@c4d0af393ef9fba641bd3ebbbf1f60d291c8475d#egg=gym
 h5py==2.10.0
 html5lib==0.9999999
 idna==2.10
